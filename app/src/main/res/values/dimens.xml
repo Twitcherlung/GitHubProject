@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="image_profile_margin">10dp</dimen>
+    <dimen name="profile_padding">3dp</dimen>
+    <dimen name="login_profile_text_size">20sp</dimen>
+    <dimen name="repo_text_size">20sp</dimen>
+    <dimen name="icon_profile_size">50dp</dimen>
+    <dimen name="_s4dp">4dp</dimen>
+    <dimen name="_s8dp">8dp</dimen>
+    <dimen name="_s20dp">20dp</dimen>
+    <dimen name="view_height">1px</dimen>
+</resources>
