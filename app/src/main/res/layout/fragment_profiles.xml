@@ -18,7 +18,7 @@
             android:id="@+id/profiles_recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:background="@color/purple_200" />
+            tools:background="@color/teal_700" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <TextView
