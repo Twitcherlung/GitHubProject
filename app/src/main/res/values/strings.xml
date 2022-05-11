@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">GitHubProject</string>
+    <string name="app_name">github</string>
+    <string name="empty">Данные отсутствуют</string>
+    <string name="avatar_description">Аватар пользователя</string>
+    <string name="retry">Повторить</string>
+    <string name="fall_load_data">Не удалось загрузить данные</string>
 </resources>
