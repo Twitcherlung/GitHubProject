@@ -1,8 +1,9 @@
-package com.example.githubproject.data
+package com.example.githubproject.data.mock
 
 import com.example.githubproject.domain.ProjectRepo
 import com.example.githubproject.domain.entities.UserProfile
 import com.example.githubproject.domain.entities.UserRepository
+import io.reactivex.rxjava3.core.Single
 
 class MockProjectRepoImpl : ProjectRepo {
     private val repoList: List<UserRepository> = listOf(
@@ -62,4 +63,12 @@ class MockProjectRepoImpl : ProjectRepo {
             email = null
         ),
     )
+
+    override fun getProfiles(): Single<List<UserProfile>> {
+        return Single.just(profiles)
+    }
+
+    override fun getRepos(loginProfile: String): Single<List<UserRepository>> {
+        return Single.just(repoList)
+    }
 }
