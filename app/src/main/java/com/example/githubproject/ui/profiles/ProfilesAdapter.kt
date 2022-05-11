@@ -1,17 +1,17 @@
 package com.example.githubproject.ui.profiles
 
-import android.view.LayoutInflater
-import android.view.View
+
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
 import com.example.githubproject.databinding.FragmentProfileItemBinding
 import com.example.githubproject.domain.entities.UserProfile
 import com.example.githubproject.ui.utils.Change
 import com.example.githubproject.ui.utils.createCombinePayloads
 
-class ProfilesAdapter : RecyclerView.Adapter<ProfilesAdapter.ProfileViewHolder>() {
+class ProfilesAdapter(
+    private val itemClickCallback: (UserProfile) -> Unit
+) : RecyclerView.Adapter<ProfilesViewHolder>() {
 
     private var listData: MutableList<UserProfile> = arrayListOf()
 
@@ -22,35 +22,20 @@ class ProfilesAdapter : RecyclerView.Adapter<ProfilesAdapter.ProfileViewHolder>(
         listData.addAll(data)
     }
 
-    private var onClick: OnClick? = null
 
-    fun getOnClick() = onClick
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProfilesViewHolder {
 
-    fun setOnClick(onClick: OnClick) {
-        this.onClick = onClick
+        return ProfilesViewHolder.createView(parent)
     }
 
-    interface OnClick {
-        fun onClick(profile: UserProfile)
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProfileViewHolder {
-        val binding = FragmentProfileItemBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
-        return ProfileViewHolder(binding.root)
-    }
-
-    override fun onBindViewHolder(holder: ProfileViewHolder, position: Int) {
-        holder.bind(listData[position])
+    override fun onBindViewHolder(holder: ProfilesViewHolder, position: Int) {
+        holder.bind(listData[position], itemClickCallback)
     }
 
     override fun getItemCount() = listData.size
 
     override fun onBindViewHolder(
-        holder: ProfileViewHolder,
+        holder: ProfilesViewHolder,
         position: Int,
         payloads: MutableList<Any>
     ) {
@@ -59,12 +44,12 @@ class ProfilesAdapter : RecyclerView.Adapter<ProfilesAdapter.ProfileViewHolder>(
             val oldData = change.oldData
             val newData = change.newData
 
-            if (oldData.name != newData.name){
+            if (oldData.name != newData.name) {
                 FragmentProfileItemBinding.bind(holder.itemView).nameTextView.text =
                     newData.name
             }
 
-            if (oldData.login != newData.login){
+            if (oldData.login != newData.login) {
                 FragmentProfileItemBinding.bind(holder.itemView).loginTextView.text =
                     newData.login
             }
@@ -74,17 +59,5 @@ class ProfilesAdapter : RecyclerView.Adapter<ProfilesAdapter.ProfileViewHolder>(
         }
     }
 
-    inner class ProfileViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(data: UserProfile) {
-            FragmentProfileItemBinding.bind(itemView).apply {
-                avatarImageView.load(data.avatarUrl)
-                loginTextView.text = data.login
-                nameTextView.text = data.name
-                itemView.setOnClickListener {
-                    getOnClick()?.onClick(data)
-                }
-            }
-        }
-    }
 
 }

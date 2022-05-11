@@ -1,5 +1,6 @@
 package com.example.githubproject.ui.profiles
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
@@ -9,8 +10,6 @@ import com.example.githubproject.app
 import com.example.githubproject.databinding.FragmentProfilesBinding
 import com.example.githubproject.domain.entities.UserProfile
 import com.example.githubproject.ui.BaseFragment
-import com.example.githubproject.ui.NavigationActivity
-import com.example.githubproject.ui.profile_details.ProfileDetailsFragment
 import com.example.githubproject.ui.utils.AppState
 import com.example.githubproject.ui.utils.createErrSnackBar
 import com.example.githubproject.ui.utils.createMsgSnackBar
@@ -25,10 +24,13 @@ class ProfilesFragment:
     private val viewModel: ProfilesContract.ViewModel by lazy {
         ProfilesViewModel(requireActivity().app.profilesUseCaseImpl)
     }
-
+    private val controller by lazy { activity as Controller }
     private var retryIter: Int = 0
     private var snackBar: Snackbar? = null
 
+    interface Controller {
+        fun openProfileDetailsScreen(profile: UserProfile)
+    }
     companion object {
         fun newInstance() = ProfilesFragment()
     }
@@ -43,16 +45,9 @@ class ProfilesFragment:
     }
 
     private fun setupUi() {
-        adapter = ProfilesAdapter()
-        adapter.setOnClick(object : ProfilesAdapter.OnClick {
-            override fun onClick(profile: UserProfile) {
-                activity?.let {
-                    if (it is NavigationActivity) {
-                        it.navigationTo(ProfileDetailsFragment.newInstance(profile), true)
-                    }
-                }
-            }
-        })
+        adapter = ProfilesAdapter {
+            controller.openProfileDetailsScreen(it)
+        }
 
         binding.profilesRecycler.layoutManager = LinearLayoutManager(
             requireContext(),
@@ -105,6 +100,12 @@ class ProfilesFragment:
                 retryIter++
             }
             else -> {}
+        }
+    }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (activity !is Controller) {
+            throw IllegalStateException(getString(R.string.activity_on_attach_err))
         }
     }
 

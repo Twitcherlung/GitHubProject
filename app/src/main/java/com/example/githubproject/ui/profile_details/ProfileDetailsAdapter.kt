@@ -1,7 +1,6 @@
 package com.example.githubproject.ui.profile_details
 
-import android.view.LayoutInflater
-import android.view.View
+
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -10,7 +9,7 @@ import com.example.githubproject.domain.entities.UserRepository
 import com.example.githubproject.ui.utils.Change
 import com.example.githubproject.ui.utils.createCombinePayloads
 
-class ProfileDetailsAdapter : RecyclerView.Adapter<ProfileDetailsAdapter.RepoViewHolder>() {
+class ProfileDetailsAdapter : RecyclerView.Adapter<ProfileDetailsViewHolder>() {
 
     private var listData: MutableList<UserRepository> = arrayListOf()
 
@@ -21,23 +20,19 @@ class ProfileDetailsAdapter : RecyclerView.Adapter<ProfileDetailsAdapter.RepoVie
         listData.addAll(data)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepoViewHolder {
-        val binding = FragmentRepoItemBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
-        return RepoViewHolder(binding.root)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProfileDetailsViewHolder {
+
+        return ProfileDetailsViewHolder.createView(parent)
     }
 
-    override fun onBindViewHolder(holder: RepoViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ProfileDetailsViewHolder, position: Int) {
         holder.bind(listData[position])
     }
 
     override fun getItemCount() = listData.size
 
     override fun onBindViewHolder(
-        holder: RepoViewHolder,
+        holder: ProfileDetailsViewHolder,
         position: Int,
         payloads: MutableList<Any>
     ) {
@@ -62,13 +57,7 @@ class ProfileDetailsAdapter : RecyclerView.Adapter<ProfileDetailsAdapter.RepoVie
         }
     }
 
-    inner class RepoViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(data: UserRepository) {
-            FragmentRepoItemBinding.bind(itemView).apply {
-                titleRepoTextView.text = data.name
-                data.description?.let { descriptionTextView.text = it }
-            }
-        }
-    }
 
 }
+
+
