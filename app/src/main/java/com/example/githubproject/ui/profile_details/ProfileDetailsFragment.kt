@@ -6,7 +6,6 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import com.example.githubproject.R
-import com.example.githubproject.app
 import com.example.githubproject.databinding.FragmentProfileDetailsBinding
 import com.example.githubproject.domain.entities.UserProfile
 import com.example.githubproject.ui.BaseFragment
@@ -15,18 +14,16 @@ import com.example.githubproject.ui.utils.createErrSnackBar
 import com.example.githubproject.ui.utils.createMsgSnackBar
 import com.example.githubproject.ui.utils.hideSnackBar
 import com.google.android.material.snackbar.Snackbar
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ProfileDetailsFragment : BaseFragment<FragmentProfileDetailsBinding>(FragmentProfileDetailsBinding::inflate) {
+class ProfileDetailsFragment :
+    BaseFragment<FragmentProfileDetailsBinding>(FragmentProfileDetailsBinding::inflate) {
 
     private lateinit var adapter: ProfileDetailsAdapter
-
+    private val viewModel:ProfileDetailsViewModelAbs by viewModel()
     var profile: UserProfile? = null
 
-    private val viewModel: ProfileDetailsContract.ViewModel by lazy {
-        ProfileDetailsViewModel(
-            requireActivity().app.repositoryUseCaseImpl
-        )
-    }
+
 
     private var retryIter: Int = 0
     private var snackBar: Snackbar? = null

@@ -6,7 +6,6 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.githubproject.R
-import com.example.githubproject.app
 import com.example.githubproject.databinding.FragmentProfilesBinding
 import com.example.githubproject.domain.entities.UserProfile
 import com.example.githubproject.ui.BaseFragment
@@ -15,15 +14,16 @@ import com.example.githubproject.ui.utils.createErrSnackBar
 import com.example.githubproject.ui.utils.createMsgSnackBar
 import com.example.githubproject.ui.utils.hideSnackBar
 import com.google.android.material.snackbar.Snackbar
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ProfilesFragment:
+class ProfilesFragment :
     BaseFragment<FragmentProfilesBinding>(FragmentProfilesBinding::inflate) {
 
     private lateinit var adapter: ProfilesAdapter
 
-    private val viewModel: ProfilesContract.ViewModel by lazy {
-        ProfilesViewModel(requireActivity().app.profilesUseCaseImpl)
-    }
+
+    private val viewModel: ProfilesViewModelAbs by viewModel()
+
     private val controller by lazy { activity as Controller }
     private var retryIter: Int = 0
     private var snackBar: Snackbar? = null
@@ -31,6 +31,7 @@ class ProfilesFragment:
     interface Controller {
         fun openProfileDetailsScreen(profile: UserProfile)
     }
+
     companion object {
         fun newInstance() = ProfilesFragment()
     }
@@ -99,9 +100,11 @@ class ProfilesFragment:
                 }
                 retryIter++
             }
-            else -> {}
+            else -> {
+            }
         }
     }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (activity !is Controller) {
